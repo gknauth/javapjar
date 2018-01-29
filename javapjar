@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function usage {
+    printf "usage: %s JARFILE\n\nrun javap on all non-inner classes in JARFILE\n\n" $0 >&2
+    exit 1
+}
+if [ $# -ne 1 ]; then usage; fi
+
+jar=$1
+declare -a classes=( $( jar tf ${jar} | grep '\.class' | fgrep -v '$' | sed 's/\.class//' | sed 's/\//./g' ) )
+
+for c in "${classes[@]}"; do
+    javap -cp $jar "$c"
+done
+
+
