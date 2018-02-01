@@ -7,8 +7,25 @@ function usage {
 if [ $# -ne 1 ]; then usage; fi
 
 jar=$1
-declare -a classes=( $( jar tf ${jar} | grep '\.class' | fgrep -v '$' | sed 's/\.class//' | sed 's/\//./g' ) )
 
+case "$OSTYPE" in
+    bsd*)     d2u=n ;;
+    cygwin*)  d2u=y ;;
+    darwin*)  d2u=n ;;
+    linux*)   d2u=n ;;
+    msys*)    d2u=y ;;
+    solaris*) d2u=n ;;
+    *)        d2u=n ;;
+esac
+
+declare -a classes=()
+if [[ "$d2u" == "y" ]]; then
+    classes=( $( jar tf ${jar} | grep '\.class' | fgrep -v '$' | sed 's/\.class//' | sed 's/\//./g' | dos2unix ) )
+else
+    classes=( $( jar tf ${jar} | grep '\.class' | fgrep -v '$' | sed 's/\.class//' | sed 's/\//./g' ) )
+fi
+
+echo "Output of:  javapjar $jar"
 for c in "${classes[@]}"; do
     javap -cp $jar "$c"
 done
