@@ -1,6 +1,6 @@
 javapjar
 
-Copyright (c) 2017 gknauth (Geoffrey S. Knauth)
+Copyright (c) 2018 gknauth (Geoffrey S. Knauth)
 
 This package is distributed under the GNU Lesser General Public
 License (LGPL).  This means that you can link javapjar into proprietary
